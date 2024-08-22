@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ Chatbot</title>
+</head>
+<body>
+    <h1>FAQ Chatbot</h1>
+    <form id="questionForm">
+        <label for="question">Ask a question:</label>
+        <input type="text" id="question" name="question" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('questionForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const question = document.getElementById('question').value;
+            const responseDiv = document.getElementById('response');
+
+            const response = await fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'question': question
+                })
+            });
+
+            const data = await response.json();
+            responseDiv.textContent = data.response;
+        });
+    </script>
+</body>
+</html>
